@@ -1,5 +1,6 @@
 from sqlalchemy import create_engine
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 import pymysql
 
@@ -12,7 +13,9 @@ DB_PASSWORD = os.getenv('DB_PASSWORD')
 DB_HOST = os.getenv('DB_HOST')
 DB_PORT = os.getenv('DB_PORT', "3306")
 DB_NAME = os.getenv('DB_NAME')
-SSL_CA_PATH = os.getenv("SSL_CA_PATH")
+
+# SSL証明書のパス
+SSL_CA_PATH = str("DigiCertGlobalRootCA.crt.pem")
 
 # MySQLのURL構築
 DATABASE_URL = f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
