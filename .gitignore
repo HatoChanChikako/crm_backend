@@ -1,0 +1,5 @@
+.env
+db_control/__pycache__
+__pycache__
+DigiCertGlobalRootCA.crt.pem
+requirements.txt.backup
