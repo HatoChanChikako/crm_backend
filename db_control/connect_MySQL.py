@@ -5,17 +5,18 @@ from dotenv import load_dotenv
 import pymysql
 
 # 環境変数の読み込み
-load_dotenv()
+bath_path = Path(__file__).parents[1]
+#load_dotenv()
 
 # データベース接続情報
 DB_USER = os.getenv('DB_USER')
 DB_PASSWORD = os.getenv('DB_PASSWORD')
 DB_HOST = os.getenv('DB_HOST')
-DB_PORT = os.getenv('DB_PORT', "3306")
+DB_PORT = os.getenv('DB_PORT')
 DB_NAME = os.getenv('DB_NAME')
 
 # SSL証明書のパス
-SSL_CA_PATH = str("DigiCertGlobalRootCA.crt.pem")
+SSL_CA_PATH = str(base_path / "DigiCertGlobalRootCA.crt.pem")
 
 # MySQLのURL構築
 DATABASE_URL = f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
