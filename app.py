@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, constr
 import requests
 import json
-from db_control import crud, mymodels
+from db_control import crud, mymodels_MySQL
 from typing import Annotated
 
 # MySQLのテーブル作成
@@ -48,8 +48,8 @@ def create_customer(customer: Customer):
     if values.get("customer_id") is None or values.get("customer_name") is None:
         raise HTTPException(status_code=400, detail="This information is required!")
 
-    tmp = crud.myinsert(mymodels.Customers, values)
-    result = crud.myselect(mymodels.Customers, values.get("customer_id"))
+    tmp = crud.myinsert(mymodels_MySQL.Customers, values)
+    result = crud.myselect(mymodels_MySQL.Customers, values.get("customer_id"))
 
     if result:
         result_obj = json.loads(result)
@@ -59,7 +59,7 @@ def create_customer(customer: Customer):
 
 @app.get("/customers")
 def read_one_customer(customer_id: str = Query(...)):
-    result = crud.myselect(mymodels.Customers, customer_id)
+    result = crud.myselect(mymodels_MySQL.Customers, customer_id)
     if not result:
         raise HTTPException(status_code=404, detail="Customer not found")
     result_obj = json.loads(result)
@@ -68,7 +68,7 @@ def read_one_customer(customer_id: str = Query(...)):
 
 @app.get("/allcustomers")
 def read_all_customer():
-    result = crud.myselectAll(mymodels.Customers)
+    result = crud.myselectAll(mymodels_MySQL.Customers)
     # 結果がNoneの場合は空配列を返す
     if not result:
         return []
@@ -85,8 +85,8 @@ def update_customer(customer: Customer):
         raise HTTPException(status_code=400, detail="This information is required!")
 
     values_original = values.copy()
-    tmp = crud.myupdate(mymodels.Customers, values)
-    result = crud.myselect(mymodels.Customers, values_original.get("customer_id"))
+    tmp = crud.myupdate(mymodels_MySQL.Customers, values)
+    result = crud.myselect(mymodels_MySQL.Customers, values_original.get("customer_id"))
     if not result:
         raise HTTPException(status_code=404, detail="Customer not found")
     result_obj = json.loads(result)
@@ -95,7 +95,7 @@ def update_customer(customer: Customer):
 
 @app.delete("/customers")
 def delete_customer(customer_id: str = Query(...)):
-    result = crud.mydelete(mymodels.Customers, customer_id)
+    result = crud.mydelete(mymodels_MySQL.Customers, customer_id)
     if not result:
         raise HTTPException(status_code=404, detail="Customer not found")
     return {"customer_id": customer_id, "status": "deleted"}
